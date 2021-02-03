@@ -29,6 +29,14 @@ public class KulibinTest {
 
     }
 
+    @Test
+    public void checkFlagIcon(){
+        KulibinResultsPage kulibinResultsPage =
+                new KulibinMainPage()
+                        .openKulibinPage()
+                        .checkFlagIconScrewdrivers(3);
+    }
+
 
     @AfterTest
     public void quit() {
