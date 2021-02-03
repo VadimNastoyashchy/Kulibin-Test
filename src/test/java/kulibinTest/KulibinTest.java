@@ -37,6 +37,14 @@ public class KulibinTest {
                         .checkFlagIconScrewdrivers(3);
     }
 
+    @Test
+    public void calculationOfThePromotionalPrice(){
+        KulibinResultsPage kulibinResultsPage =
+                new KulibinMainPage()
+                        .openKulibinPage()
+                        .calculationOfThePromotionalPriceOfTheGrinder(10);
+    }
+
 
     @AfterTest
     public void quit() {

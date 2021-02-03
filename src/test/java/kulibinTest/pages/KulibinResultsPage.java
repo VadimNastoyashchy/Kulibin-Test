@@ -2,6 +2,7 @@ package kulibinTest.pages;
 
 import kulibinTest.driverutill.DriverFactory;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
@@ -37,7 +38,7 @@ public class KulibinResultsPage {
         for (int i = 0; i < numberOfDrills; i++) {
             int randomLink = (int) (Math.random() * drillLinkList.size());
             DriverFactory.driver.navigate().to(drillLinkList.get(randomLink));
-            WebElement price = DriverFactory.driver.findElement(By.xpath("//span[@class='item_old_price old-price']"));
+            WebElement price = DriverFactory.driver.findElement(By.xpath("//span[@class='old-price']"));
             String promotionalPrice = price.getAttribute("innerHTML");
             Assert.assertTrue(promotionalPrice.length() > 0);
         }
@@ -95,6 +96,44 @@ public class KulibinResultsPage {
                     System.out.println(titleText);
                 }
                 if (linkCount == screwdriversList.size()) {
+                    DriverFactory.driver.findElement(By.linkText("Следующая")).click();
+                    linkCount = 1;
+                }
+                linkCount++;
+            }
+        }
+        return new KulibinResultsPage();
+    }
+
+    public KulibinResultsPage calculationOfThePromotionalPriceOfTheGrinder(int numberOfGoods) {
+        WebElement grinder = DriverFactory.driver.findElement(By
+                .xpath("/html/body/div[3]/div/div[1]/div/div/div[2]/div/div/ul/li[3]/div/div[1]/ul/li[1]/a"));
+        DriverFactory.driver.navigate().to(grinder.getAttribute("href"));
+        int currentPage = 1;
+        int numberGoodsCount = 0;
+        endIteration:
+        for (int i = 1; i < 5; i++, currentPage++) {
+            int linkCount = 1;
+            List<WebElement> grindersList = DriverFactory.driver.findElements(By.
+                    xpath("//li[@class='col-xs-4 js-product']"));
+            for (WebElement webElement : grindersList) {
+                if (numberGoodsCount >= numberOfGoods) {
+                    break endIteration;
+                }
+                try {
+                    WebElement oldPriceElem = webElement.findElement(By.cssSelector(".old-price"));
+                    String oldTempPrice = oldPriceElem.getAttribute("innerHTML");
+                    int oldPrice = Integer.parseInt(oldTempPrice.substring(0, oldTempPrice.indexOf('<')).replaceAll(" ", ""));
+                    if (oldTempPrice.length() > 0) {
+                        WebElement newPriceElem = webElement.findElement(By.cssSelector(".price"));
+                        String newTempPrice = newPriceElem.getAttribute("innerHTML");
+                        int newPrice = Integer.parseInt(newTempPrice.substring(0, newTempPrice.indexOf('<')).replaceAll(" ", ""));
+                        numberGoodsCount++;
+                        System.out.println(oldPrice + " + " + newPrice);
+                    }
+                } catch (NoSuchElementException e) {
+                }
+                if (linkCount == grindersList.size()) {
                     DriverFactory.driver.findElement(By.linkText("Следующая")).click();
                     linkCount = 1;
                 }
