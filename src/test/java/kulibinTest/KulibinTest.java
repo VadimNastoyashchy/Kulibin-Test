@@ -30,7 +30,7 @@ public class KulibinTest {
     }
 
     @Test
-    public void checkFlagIcon(){
+    public void checkFlagIcon() {
         KulibinResultsPage kulibinResultsPage =
                 new KulibinMainPage()
                         .openKulibinPage()
@@ -38,7 +38,7 @@ public class KulibinTest {
     }
 
     @Test
-    public void calculationOfThePromotionalPrice(){
+    public void calculationOfThePromotionalPrice() {
         KulibinResultsPage kulibinResultsPage =
                 new KulibinMainPage()
                         .openKulibinPage()

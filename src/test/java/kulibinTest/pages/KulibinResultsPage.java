@@ -128,8 +128,14 @@ public class KulibinResultsPage {
                         WebElement newPriceElem = webElement.findElement(By.cssSelector(".price"));
                         String newTempPrice = newPriceElem.getAttribute("innerHTML");
                         int newPrice = Integer.parseInt(newTempPrice.substring(0, newTempPrice.indexOf('<')).replaceAll(" ", ""));
+                        WebElement discountElement = webElement.findElement(By.tagName("span"));
+                        String tempDiscount = discountElement.getAttribute("innerHTML");
+                        int discount = Integer.parseInt(tempDiscount.substring(1, tempDiscount.indexOf('%')).replaceAll(" ", ""));
+                        WebElement title = webElement.findElement(By.cssSelector(".s_title"));
+                        String titleText = title.findElement(By.tagName("a")).getAttribute("title");
+                        int result = oldPrice - ((oldPrice * discount) / 100);
                         numberGoodsCount++;
-                        System.out.println(oldPrice + " + " + newPrice);
+                        Assert.assertEquals(newPrice, result, titleText + " " + result + " " + newPrice);
                     }
                 } catch (NoSuchElementException e) {
                 }
